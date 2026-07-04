@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MALAGASY TRANSPORT - Accueil</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="config.js"></script>
+    <style>
+        /* Style pour l'image de fond */
+        body {
+            background-image: url('img.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        /* Overlay sombre pour meilleure lisibilité du texte */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Carte transparente avec effet glassmorphism */
+        .card-glass {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 50px 45px !important;
+            max-width: 850px;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+
+        .card-glass:hover {
+            transform: scale(1.01);
+        }
+
+        /* Logo et titre */
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .logo-container .icon-bus {
+            font-size: 3.5rem;
+            color: #28a745;
+            display: block;
+            margin-bottom: 10px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .card-glass h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a5276, #28a745);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            letter-spacing: 1px;
+        }
+
+        .card-glass .subtitle {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        /* Section "Dernière chance" */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.08), rgba(255, 193, 7, 0.08));
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin: 25px 0;
+            border-left: 5px solid #dc3545;
+            text-align: left;
+        }
+
+        .cta-section .cta-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+
+        .cta-section .cta-title i {
+            color: #ffc107;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .cta-section .cta-text {
+            color: #2c3e50;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .cta-section .cta-text strong {
+            color: #1a5276;
+        }
+
+        /* Liste des avantages */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 25px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .features-grid .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            padding: 6px 0;
+            transition: all 0.3s ease;
+        }
+
+        .features-grid .feature-item:hover {
+            transform: translateX(5px);
+            color: #1a5276;
+        }
+
+        .features-grid .feature-item i {
+            color: #28a745;
+            font-size: 1.1rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        /* Offre spéciale */
+        .offer-badge {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            margin: 10px 0;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .offer-badge i {
+            margin-right: 8px;
+        }
+
+        /* Boutons */
+        .btn-custom {
+            padding: 14px 45px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            min-width: 180px;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-client {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            color: white;
+        }
+
+        .btn-client:hover {
+            background: linear-gradient(135deg, #1e7e34, #17a2b8);
+            color: white;
+        }
+
+        .btn-admin {
+            background: linear-gradient(135deg, #dc3545, #e74c3c);
+            border: none;
+            color: white;
+        }
+
+        .btn-admin:hover {
+            background: linear-gradient(135deg, #bd2130, #c0392b);
+            color: white;
+        }
+
+        /* Footer */
+        .version-text {
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 0.85rem;
+            margin-top: 25px;
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-glass {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .card-glass {
+                padding: 30px 20px !important;
+                margin: 15px;
+            }
+
+            .card-glass h1 {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .features-grid .feature-item {
+                font-size: 0.85rem;
+            }
+
+            .cta-section {
+                padding: 18px 20px;
+            }
+
+            .cta-section .cta-title {
+                font-size: 1.1rem;
+            }
+
+            .btn-custom {
+                padding: 12px 30px;
+                font-size: 1rem;
+                min-width: 140px;
+            }
+
+            .d-flex {
+                flex-direction: column;
+                gap: 12px !important;
+                align-items: center;
+            }
+
+            .logo-container .icon-bus {
+                font-size: 2.8rem;
+            }
+
+            .offer-badge {
+                font-size: 0.85rem;
+                padding: 6px 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-glass h1 {
+                font-size: 1.6rem;
+            }
+
+            .card-glass .subtitle {
+                font-size: 0.95rem;
+            }
+
+            .cta-section .cta-text {
+                font-size: 0.85rem;
+            }
+
+            .btn-custom {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+                min-width: 120px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Overlay sombre -->
+    <div class="overlay"></div>
+
+    <div class="container mt-3 mt-md-5">
+        <div class="card-glass shadow p-5 text-center">
+            <!-- Logo et titre -->
+            <div class="logo-container">
+                <i class="fas fa-bus icon-bus"></i>
+                <h1 class="mb-2">MALAGASY TRANSPORT</h1>
+                <p class="subtitle mb-0">
+                    <i class="fas fa-map-pin text-success me-1"></i>
+                    Voyagez à travers Madagascar
+                </p>
+            </div>
+
+            <!-- Section "Dernière chance" -->
+            <div class="cta-section">
+                <div class="cta-title">
+                    <i class="fas fa-clock me-2"></i>Dernière chance : votre prochaine destination vous attend !
+                </div>
+                <p class="cta-text">
+                    Vous avez toujours voulu visiter les régions du <strong>Madagascar</strong> ?
+                    Arrêtez de rêver et passez à l'action.
+                </p>
+                <p class="cta-text">
+                    Avec notre plateforme de gestion de voyage, tout devient simple, rapide et excitant :
+                </p>
+
+                <!-- Liste des avantages -->
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-search"></i>
+                        <span>Comparez des milliers d'offres en un clin d'œil</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Réservez vos vols, hôtels et activités au meilleur prix</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Organisez votre séjour minute par minute</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Partagez vos souvenirs avec notre communauté</span>
+                    </div>
+                </div>
+
+                <!-- Offre spéciale -->
+                <div class="offer-badge">
+                    <i class="fas fa-gift"></i>
+                    Offre spéciale nouveau visiteur : <strong>-15%</strong> sur votre premier voyage organisé !
+                </div>
+
+                <p class="cta-text mt-2" style="font-weight: 600; color: #dc3545;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Ne laissez pas passer cette opportunité. Les meilleures destinations s'arrachent vite !
+                </p>
+                <p class="cta-text" style="font-size: 1.05rem; font-weight: 700; color: #1a5276;">
+                    <i class="fas fa-rocket me-2" style="color: #dc3545;"></i>
+                    Agissez maintenant ! Le voyage de vos rêves est à portée de clic.
+                </p>
+            </div>
+
+            <!-- Boutons Client / Admin -->
+            <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+                <a href="login.html" class="btn btn-client btn-custom">
+                    <i class="fas fa-user me-2"></i>Client
+                </a>
+                <a href="admin-login.html" class="btn btn-admin btn-custom">
+                    <i class="fas fa-user-shield me-2"></i>Admin
+                </a>
+            </div>
+
+            <!-- Version -->
+            <p class="version-text">
+                <i class="far fa-copyright me-1"></i>2026 MALAGASY TRANSPORT — Tous droits réservés
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

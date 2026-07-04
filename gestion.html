@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Voyages - Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="config.js"></script>
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-danger">Gestion des Voyages ✈️</h2>
+            <a href="dashboard.html" class="btn btn-outline-secondary">Retour au Dashboard</a>
+        </div>
+
+        <!-- Formulaire ajout voyage -->
+        <div class="card mt-4">
+            <div class="card-header bg-primary text-white">Ajouter un voyage</div>
+            <div class="card-body">
+                <form id="addVoyageForm">
+                    <div class="mb-3">
+                        <label>Destination</label>
+                        <input type="text" class="form-control" id="destination" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Date</label>
+                        <input type="date" class="form-control" id="date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Heure</label>
+                        <input type="time" class="form-control" id="heure" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Prix</label>
+                        <input type="number" step="0.01" class="form-control" id="prix" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Ajouter</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Liste des voyages -->
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">Liste des voyages</div>
+            <div class="card-body">
+                <table class="table table-striped" id="voyagesTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Destination</th>
+                            <th>Date</th>
+                            <th>Heure</th>
+                            <th>Prix</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="voyagesTableBody">
+                        <!-- Les voyages seront chargés ici -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Charger les voyages existants
+        async function loadVoyages() {
+            try {
+                const response = await fetch(API.client.accueil);
+                if (!response.ok) throw new Error('Erreur chargement');
+                const voyages = await response.json();
+                const tableBody = document.getElementById("voyagesTableBody");
+                tableBody.innerHTML = "";
+
+                if (voyages.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Aucun voyage</td></tr>';
+                    return;
+                }
+
+                voyages.forEach(v => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${v.id}</td>
+                        <td>${v.destination}</td>
+                        <td>${v.date}</td>
+                        <td>${v.heure}</td>
+                        <td>${v.prix} MGA</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="deleteVoyage(${v.id})">Supprimer</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                document.getElementById("voyagesTableBody").innerHTML = 
+                    '<tr><td colspan="6" class="text-danger text-center">Erreur de chargement</td></tr>';
+                console.error(error);
+            }
+        }
+
+        // Ajouter un voyage
+        document.getElementById("addVoyageForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const destination = document.getElementById("destination").value;
+            const date = document.getElementById("date").value;
+            const heure = document.getElementById("heure").value;
+            const prix = document.getElementById("prix").value;
+
+            try {
+                const response = await fetch(API.admin.voyages, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ destination, date, heure, prix })
+                });
+
+                if (!response.ok) throw new Error('Erreur ajout');
+                alert("✅ Voyage ajouté !");
+                loadVoyages();
+                document.getElementById("addVoyageForm").reset();
+            } catch (error) {
+                alert("❌ Erreur lors de l'ajout");
+                console.error(error);
+            }
+        });
+
+        // Supprimer un voyage
+        async function deleteVoyage(id) {
+            if (!confirm('Supprimer ce voyage ?')) return;
+            try {
+                const response = await fetch(API.admin.voyage(id), { method: "DELETE" });
+                if (!response.ok) throw new Error('Erreur suppression');
+                alert("❌ Voyage supprimé !");
+                loadVoyages();
+            } catch (error) {
+                alert("❌ Erreur lors de la suppression");
+                console.error(error);
+            }
+        }
+
+        // Charger les voyages au démarrage
+        loadVoyages();
+    </script>
+</body>
+
+</html>

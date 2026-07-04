@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Messages Clients - Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="config.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .header-glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .card-glass {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .btn-deconnexion {
+            background: #6c757d;
+            border: none;
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-deconnexion:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        .message-card {
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .message-card:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateX(5px);
+        }
+
+        .message-card.read {
+            border-left-color: #28a745;
+        }
+
+        .message-card .client-info {
+            font-weight: 600;
+            color: #1a5276;
+        }
+
+        .message-card .client-info i {
+            color: #17a2b8;
+        }
+
+        .message-card .date {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .message-card .sujet {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .message-card .message-text {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .message-card .reponse-box {
+            background: #e8f4f8;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 3px solid #17a2b8;
+        }
+
+        .badge-count {
+            background: #dc3545;
+            color: white;
+            border-radius: 50px;
+            padding: 2px 10px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+
+        .btn-reply {
+            background: linear-gradient(135deg, #17a2b8, #0dcaf0);
+            border: none;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reply:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+
+        .btn-mark-read {
+            background: #28a745;
+            border: none;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-mark-read:hover {
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .reply-form {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .reply-form.active {
+            display: block;
+        }
+
+        .btn-send-reply {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-send-reply:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header-glass .d-flex {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .message-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header-glass">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h2 class="mb-0">
+                    <i class="fas fa-envelope text-danger me-2"></i>Messages Clients
+                    <span id="unreadBadge" class="badge-count" style="display:none;">0</span>
+                </h2>
+                <div class="d-flex gap-2">
+                    <button id="refreshBtn" class="btn btn-info" style="border-radius:50px;">
+                        <i class="fas fa-sync-alt"></i> Rafraîchir
+                    </button>
+                    <a href="dashboard.html" class="btn btn-outline-primary" style="border-radius:50px;">
+                        <i class="fas fa-arrow-left me-1"></i>Dashboard
+                    </a>
+                    <button id="logoutBtn" class="btn btn-deconnexion">
+                        <i class="fas fa-sign-out-alt me-2"></i>Se déconnecter
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des messages -->
+        <div class="card-glass">
+            <h5 class="mb-3">
+                <i class="fas fa-list text-primary me-2"></i>Tous les messages
+            </h5>
+            <div id="messagesList">
+                <p class="text-muted text-center">Chargement des messages...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const admin = JSON.parse(localStorage.getItem('admin'));
+        if (!admin || admin.role !== 'admin') {
+            window.location.href = 'admin-login.html';
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('admin');
+            window.location.href = 'admin-login.html';
+        });
+
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            loadMessages();
+        });
+
+        // Charger les messages
+        async function loadMessages() {
+            try {
+                const response = await fetch(API.admin.messages);
+                if (!response.ok) throw new Error('Erreur');
+                const messages = await response.json();
+                const container = document.getElementById('messagesList');
+
+                // Compter les non lus
+                const unread = messages.filter(m => m.statut === 'non_lu').length;
+                const badge = document.getElementById('unreadBadge');
+                if (unread > 0) {
+                    badge.style.display = 'inline';
+                    badge.textContent = unread;
+                } else {
+                    badge.style.display = 'none';
+                }
+
+                if (messages.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                            <p>Aucun message pour le moment.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = messages.map(msg => {
+                    const isRead = msg.statut !== 'non_lu';
+                    const date = new Date(msg.date_envoi).toLocaleString('fr-FR');
+
+                    let statutBadge = '';
+                    if (msg.statut === 'non_lu') statutBadge = '<span class="badge bg-danger ms-2">Non lu</span>';
+                    else if (msg.statut === 'lu') statutBadge = '<span class="badge bg-success ms-2">Lu</span>';
+                    else if (msg.statut === 'repondu') statutBadge = '<span class="badge bg-info ms-2">Répondu</span>';
+
+                    let reponseHtml = '';
+                    if (msg.reponse) {
+                        reponseHtml = `
+                            <div class="reponse-box">
+                                <strong><i class="fas fa-reply text-primary"></i> Réponse envoyée :</strong>
+                                <p class="mb-0 mt-1">${msg.reponse}</p>
+                            </div>
+                        `;
+                    }
+
+                    return `
+                        <div class="message-card ${isRead ? 'read' : ''}">
+                            <div class="d-flex justify-content-between align-items-start flex-wrap">
+                                <div>
+                                    <span class="client-info">
+                                        <i class="fas fa-user me-1"></i>${msg.client_nom}
+                                    </span>
+                                    <span class="ms-2 text-muted" style="font-size:0.85rem;">${msg.client_email}</span>
+                                    ${statutBadge}
+                                </div>
+                                <span class="date">${date}</span>
+                            </div>
+                            <div class="sujet mt-2">📝 ${msg.sujet}</div>
+                            <div class="message-text">${msg.message}</div>
+                            ${reponseHtml}
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                ${!isRead ? `<button class="btn-mark-read" onclick="markAsRead(${msg.id})">
+                                    <i class="fas fa-check me-1"></i>Marquer comme lu
+                                </button>` : ''}
+                                <button class="btn-reply" onclick="toggleReply(${msg.id})">
+                                    <i class="fas fa-reply me-1"></i>Répondre
+                                </button>
+                            </div>
+                            <div id="replyForm_${msg.id}" class="reply-form">
+                                <form onsubmit="sendReply(event, ${msg.id})">
+                                    <div class="mb-2">
+                                        <label class="form-label">Votre réponse :</label>
+                                        <textarea class="form-control" id="replyText_${msg.id}" rows="3" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn-send-reply">
+                                        <i class="fas fa-paper-plane me-2"></i>Envoyer la réponse
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm ms-2" onclick="toggleReply(${msg.id})">
+                                        Annuler
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                document.getElementById('messagesList').innerHTML =
+                    '<p class="text-danger text-center">Erreur de chargement des messages</p>';
+                console.error(error);
+            }
+        }
+
+        // Marquer comme lu
+        async function markAsRead(id) {
+            try {
+                const response = await fetch(API.admin.read(id), {
+                    method: 'PUT'
+                });
+                if (!response.ok) throw new Error('Erreur');
+                loadMessages();
+            } catch (error) {
+                alert('❌ Erreur lors du marquage');
+                console.error(error);
+            }
+        }
+
+        // Afficher/masquer le formulaire de réponse
+        function toggleReply(id) {
+            const form = document.getElementById(`replyForm_${id}`);
+            form.classList.toggle('active');
+        }
+
+        // Envoyer une réponse
+        async function sendReply(event, id) {
+            event.preventDefault();
+            const reponse = document.getElementById(`replyText_${id}`).value;
+
+            if (!reponse) {
+                alert('Veuillez écrire une réponse');
+                return;
+            }
+
+            try {
+                const response = await fetch(API.admin.reply(id), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reponse })
+                });
+
+                if (!response.ok) throw new Error('Erreur');
+
+                alert('✅ Réponse envoyée avec succès !');
+                loadMessages();
+            } catch (error) {
+                alert('❌ Erreur lors de l\'envoi de la réponse');
+                console.error(error);
+            }
+        }
+
+        loadMessages();
+    </script>
+</body>
+
+</html>
