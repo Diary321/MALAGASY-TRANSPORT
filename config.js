@@ -1,5 +1,7 @@
-// config.js
-const API_BASE_URL = 'http://localhost:3000';
+// config.js - Version pour Vercel
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+    ? 'https://votre-projet.vercel.app'  // Remplacez par votre URL Vercel
+    : 'http://localhost:3000';
 
 const API = {
     auth: {
@@ -11,7 +13,6 @@ const API = {
         selection: `${API_BASE_URL}/client/selection`,
         confirmation: (id) => `${API_BASE_URL}/client/confirmation/${id}`,
         historique: (userId) => `${API_BASE_URL}/client/historique/${userId}`,
-        // Messages client
         messages: (userId) => `${API_BASE_URL}/client/messages/${userId}`,
         sendMessage: `${API_BASE_URL}/client/messages`
     },
@@ -21,7 +22,6 @@ const API = {
         pending: `${API_BASE_URL}/admin/reservations/pending`,
         confirm: (id) => `${API_BASE_URL}/admin/reservations/confirm/${id}`,
         cancel: (id) => `${API_BASE_URL}/admin/reservations/cancel/${id}`,
-        // Messages admin
         messages: `${API_BASE_URL}/admin/messages`,
         unread: `${API_BASE_URL}/admin/messages/unread`,
         read: (id) => `${API_BASE_URL}/admin/messages/read/${id}`,

@@ -5,14 +5,19 @@
     "main": "serveur.js",
     "scripts": {
         "start": "node serveur.js",
-        "dev": "nodemon serveur.js"
+        "dev": "nodemon serveur.js",
+        "vercel-build": "npm install"
     },
     "author": "Dyari",
     "license": "ISC",
     "dependencies": {
+        "bcrypt": "^5.1.0",
+        "cors": "^2.8.6",
+        "dotenv": "^17.4.2",
         "express": "^4.18.2",
         "jsonwebtoken": "^9.0.2",
-        "mysql": "^2.18.1"
+        "mysql": "^2.18.1",
+        "mysql2": "^3.22.5"
     },
     "devDependencies": {
         "nodemon": "^3.0.2"
