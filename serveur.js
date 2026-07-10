@@ -1,14 +1,8 @@
-/*
- * @Author: Diary321 dyarijuniorofficiel@gmail.com
- * @Date: 2026-06-24 02:29:08
- * @LastEditors: Diary321 dyarijuniorofficiel@gmail.com
- * @LastEditTime: 2026-07-06 12:21:22
- * @FilePath: \MALAGASY_TRANSPORT\serveur.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+require('dotenv').config();
+
 const app = express();
 
 // Import des routes
@@ -21,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir les fichiers statiques (HTML, CSS, JS)
+// Servir les fichiers statiques
 app.use(express.static(path.join(__dirname)));
 
 // Routes API
@@ -29,7 +23,7 @@ app.use('/auth', authRoutes);
 app.use('/client', clientRoutes);
 app.use('/admin', adminRoutes);
 
-// Route par défaut
+// Route par défaut - Servir index.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -48,11 +42,12 @@ app.use((err, req, res, next) => {
 // Export pour Vercel
 module.exports = app;
 
-// Lancement du serveur (uniquement en local)
+// Lancement en local (uniquement si fichier exécuté directement)
 if (require.main === module) {
     const port = process.env.PORT || 3000;
     app.listen(port, () => {
         console.log(`✅ Serveur MALAGASY TRANSPORT sur http://localhost:${port}`);
         console.log(`📱 Ouvrez http://localhost:${port}`);
+        console.log(`🔗 Base de données: ${process.env.DB_HOST || 'Railway'}`);
     });
 }
