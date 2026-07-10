@@ -1,7 +1,22 @@
-// config.js - Version pour Vercel
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-    ? 'https://votre-projet.vercel.app'  // Remplacez par votre URL Vercel
-    : 'http://localhost:3000';
+// config.js - Version corrigée pour Vercel
+// Détection automatique de l'environnement
+const getApiBaseUrl = () => {
+    const hostname = window.location.hostname;
+    const protocol = window.location.protocol;
+
+    // Mode développement local
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:3000';
+    }
+
+    // Mode production (Vercel, Railway, etc.)
+    // Utilise l'URL actuelle du site
+    return `${protocol}//${hostname}`;
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+console.log('🔗 API connectée à:', API_BASE_URL);
 
 const API = {
     auth: {
