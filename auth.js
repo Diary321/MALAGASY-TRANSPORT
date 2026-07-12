@@ -11,7 +11,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const db = require('./db');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const SECRET = process.env.JWT_SECRET || 'malagasy_secret_2026';
 
@@ -61,7 +61,7 @@ router.post('/login', (req, res) => {
 
     const hash = hashPassword(mot_de_passe);
 
-    db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
             console.error('Erreur SQL:', err);
             return res.status(500).send('Erreur serveur');
@@ -75,7 +75,7 @@ router.post('/login', (req, res) => {
         let passwordMatch = false;
 
         if (isBcryptHash(storedHash)) {
-            passwordMatch = await bcrypt.compare(mot_de_passe, storedHash);
+            passwordMatch = bcrypt.compareSync(mot_de_passe, storedHash);
         } else {
             passwordMatch = storedHash === hash;
         }

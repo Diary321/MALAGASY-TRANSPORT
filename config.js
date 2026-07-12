@@ -1,3 +1,11 @@
+/*
+ * @Author: Diary321 dyarijuniorofficiel@gmail.com
+ * @Date: 2026-07-01 12:27:01
+ * @LastEditors: Diary321 dyarijuniorofficiel@gmail.com
+ * @LastEditTime: 2026-07-12 11:05:27
+ * @FilePath: \MALAGASY_TRANSPORT\config.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 // config.js - Version corrigée pour Vercel
 // Détection automatique de l'environnement
 const getApiBaseUrl = () => {

@@ -1,6 +1,6 @@
-// add-admin-direct.js
+// add-admin-railway.js
 const mysql = require('mysql2');
-const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 console.log('🔍 Ajout de l\'administrateur sur Railway...');
 
@@ -25,11 +25,12 @@ connection.connect((err) => {
 
     console.log('✅ Connecté à Railway');
 
-    // Hash SHA256 pour 'admin123'
-    const hash = crypto.createHash('sha256').update('admin123').digest('hex');
+    // Hash bcrypt pour 'admin123'
+    const hash = bcrypt.hashSync('admin123', 10);
+    const adminEmail = 'admin@gmail.com';
 
     // Vérifier si l'admin existe déjà
-    connection.query('SELECT * FROM users WHERE email = "admin@malagasy.com"', (err, results) => {
+    connection.query('SELECT * FROM users WHERE email = ?', [adminEmail], (err, results) => {
         if (err) {
             console.error('❌ Erreur:', err.message);
             connection.end();
@@ -46,7 +47,7 @@ connection.connect((err) => {
         // Ajouter l'admin
         connection.query(
             'INSERT INTO users (nom, email, mot_de_passe, role) VALUES (?, ?, ?, ?)',
-            ['Administrateur', 'admin@malagasy.com', hash, 'admin'],
+            ['Administrateur', adminEmail, hash, 'admin'],
             (err, result) => {
                 if (err) {
                     console.error('❌ Erreur insertion:', err.message);
