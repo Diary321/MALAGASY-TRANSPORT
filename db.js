@@ -26,6 +26,11 @@ if (process.env.DATABASE_URL) {
     if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_NAME) {
         console.error('❌ Aucune configuration DB complète trouvée. Définissez DATABASE_URL ou DB_HOST / DB_USER / DB_PASSWORD / DB_NAME.');
     }
+
+    if (process.env.VERCEL && process.env.DB_HOST === 'mysql.railway.internal') {
+        console.error('⚠️ Attention : mysql.railway.internal n\'est pas accessible depuis Vercel. Utilisez DATABASE_URL ou une instance MySQL publique/Railway accessible.');
+    }
+
     dbConfig = {
         host: process.env.DB_HOST || 'mysql.railway.internal',
         port: parseInt(process.env.DB_PORT) || 3306,
