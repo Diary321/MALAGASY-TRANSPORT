@@ -1,10 +1,9 @@
-// add-admin-railway.js
+// add-admin-railway.js - CORRIGÉ
 const mysql = require('mysql2');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt'); // ← CHANGÉ
 
 console.log('🔍 Ajout de l\'administrateur sur Railway...');
 
-// Configuration directe (remplacez par vos valeurs)
 const config = {
     host: 'switchyard.proxy.rlwy.net',
     port: 29442,
@@ -25,11 +24,9 @@ connection.connect((err) => {
 
     console.log('✅ Connecté à Railway');
 
-    // Hash bcrypt pour 'admin123'
     const hash = bcrypt.hashSync('admin123', 10);
-    const adminEmail = 'admin@gmail.com';
+    const adminEmail = 'admin@malagasy.com';
 
-    // Vérifier si l'admin existe déjà
     connection.query('SELECT * FROM users WHERE email = ?', [adminEmail], (err, results) => {
         if (err) {
             console.error('❌ Erreur:', err.message);
@@ -44,7 +41,6 @@ connection.connect((err) => {
             process.exit(0);
         }
 
-        // Ajouter l'admin
         connection.query(
             'INSERT INTO users (nom, email, mot_de_passe, role) VALUES (?, ?, ?, ?)',
             ['Administrateur', adminEmail, hash, 'admin'],

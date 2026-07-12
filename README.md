@@ -1,25 +1,41 @@
-# MALAGASY-TRANSPORT
+<!--
+ * @Author: Diary321 dyarijuniorofficiel@gmail.com
+ * @Date: 2026-07-05 01:51:11
+ * @LastEditors: Diary321 dyarijuniorofficiel@gmail.com
+ * @LastEditTime: 2026-07-12 11:24:03
+ * @FilePath: \MALAGASY_TRANSPORT\README.md
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+# MALAGASY TRANSPORT 🚍
 
-## Déploiement Vercel / Railway
+Système de réservation de voyage à Madagascar.
 
-Pour que l'API fonctionne correctement en production, configure ces variables d'environnement dans le dashboard Vercel :
+## 🚀 Déploiement
 
-- `DATABASE_URL` = `mysql://USER:PASSWORD@HOST:PORT/DATABASE`
-- `JWT_SECRET` = `malagasy_secret_2026` ou une valeur secrète personnelle
+### Variables d'environnement (Vercel)
 
-Tu peux aussi utiliser les variables individuelles si tu préfères :
+| Variable | Description | Exemple |
+|----------|-------------|---------|
+| `DATABASE_URL` | URL complète MySQL | `mysql://user:pass@host:port/db` |
+| `DB_HOST` | Hôte MySQL | `switchyard.proxy.rlwy.net` |
+| `DB_PORT` | Port MySQL | `29442` |
+| `DB_USER` | Utilisateur MySQL | `root` |
+| `DB_PASSWORD` | Mot de passe MySQL | `****` |
+| `DB_NAME` | Nom de la base | `railway` |
+| `JWT_SECRET` | Secret JWT | `malagasy_secret_2026` |
 
-- `DB_HOST`
-- `DB_PORT`
-- `DB_USER`
-- `DB_PASSWORD`
-- `DB_NAME`
+### ⚠️ Important
 
-> Important : sur Vercel, `mysql.railway.internal` n'est pas accessible. Utilise l'URL publique fournie par Railway (`switchyard.proxy.rlwy.net` ou équivalent).
+Sur Vercel, `mysql.railway.internal` **n'est pas accessible**. Utilisez l'URL publique Railway (`switchyard.proxy.rlwy.net`).
 
-## Notes de connexion
+## 🔑 Comptes de test
 
-- L'API `POST /auth/login` doit se connecter à la base de données pour authentifier l'utilisateur.
-- Si tu as un compte admin existant avec un hash bcrypt (`$2b$...`), le backend l'accepte.
-- Si l'erreur persiste, vérifie bien que la variable `DATABASE_URL` est définie dans Vercel.
+| Rôle | Email | Mot de passe |
+|------|-------|--------------|
+| Admin | `admin@malagasy.com` | `admin123` |
 
+## 📦 Installation locale
+
+```bash
+npm install
+npm run dev
