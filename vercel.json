@@ -20,10 +20,6 @@
     {
       "src": "*.jpg",
       "use": "@vercel/static"
-    },
-    {
-      "src": "*.png",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -56,12 +52,17 @@
       "dest": "/$1"
     },
     {
-      "src": "/(.*\\.png)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
+      "src": "/(.*)",
+      "dest": "/serveur.js"
     }
-  ]
+  ],
+  "env": {
+    "DATABASE_URL": "mysql://root:FtpPySNnXcFeoMqOtgmCUgHizLycFhIp@switchyard.proxy.rlwy.net:29442/railway",
+    "DB_HOST": "switchyard.proxy.rlwy.net",
+    "DB_PORT": "29442",
+    "DB_USER": "root",
+    "DB_PASSWORD": "FtpPySNnXcFeoMqOtgmCUgHizLycFhIp",
+    "DB_NAME": "railway",
+    "JWT_SECRET": "malagasy_secret_2026"
+  }
 }
