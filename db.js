@@ -23,6 +23,9 @@ if (process.env.DATABASE_URL) {
     dbConfig = process.env.DATABASE_URL;
 } else {
     console.log('📡 Utilisation des variables individuelles');
+    if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_NAME) {
+        console.error('❌ Aucune configuration DB complète trouvée. Définissez DATABASE_URL ou DB_HOST / DB_USER / DB_PASSWORD / DB_NAME.');
+    }
     dbConfig = {
         host: process.env.DB_HOST || 'mysql.railway.internal',
         port: parseInt(process.env.DB_PORT) || 3306,

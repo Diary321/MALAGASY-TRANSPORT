@@ -1,10 +1,18 @@
+/*
+ * @Author: Diary321 dyarijuniorofficiel@gmail.com
+ * @Date: 2026-06-24 02:29:33
+ * @LastEditors: Diary321 dyarijuniorofficiel@gmail.com
+ * @LastEditTime: 2026-07-02 23:34:54
+ * @FilePath: \MALAGASY_TRANSPORT\auth.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const db = require('./db');
 const crypto = require('crypto');
 
-const SECRET = 'malagasy_secret_2026';
+const SECRET = process.env.JWT_SECRET || 'malagasy_secret_2026';
 
 // Fonction pour hacher le mot de passe avec SHA256
 function hashPassword(password) {
